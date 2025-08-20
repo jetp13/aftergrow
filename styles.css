@@ -1,0 +1,134 @@
+/* 全局 */
+:root{
+  --bg: #000;
+  --text: #f5f5f7;
+  --neon-pink: #ff3aa6;
+  --neon-core: #ffd6eb;
+  --neon-mid:  #ff6fbd;
+
+  --fs-cta: clamp(18px, 2.8vw, 24px);
+  --lh-cta: 1.25;
+
+  --fs-counter: clamp(13px, 2vw, 16px);
+  --lh-counter: 1.3;
+
+  --btn-py: clamp(14px, 2.2vh, 18px);
+  --btn-px: clamp(18px, 4.5vw, 28px);
+  --btn-radius: 14px;
+}
+html{ -webkit-text-size-adjust:100%; }
+body.page{
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+           max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Heiti TC", Arial, sans-serif;
+}
+.container{ max-width: 720px; margin: 0 auto; }
+.hero{ text-align:center; margin: 2dvh 0 1dvh; }
+.brand{ font-size: clamp(28px,6vw,40px); margin:0; }
+.tagline{ opacity:0.9; margin:.5rem 0 0; }
+
+.hero-actions{ display:grid; gap:14px; margin-top: 4dvh; }
+.btn-primary, .btn-secondary{
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size: var(--fs-cta); line-height: var(--lh-cta);
+  padding: var(--btn-py) var(--btn-px);
+  border-radius: var(--btn-radius);
+  min-height: 48px; text-align:center; letter-spacing: .2px;
+  border: 1px solid rgba(255,58,166,0.35);
+  background: rgba(255,58,166,0.08);
+  color: var(--text);
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+}
+.btn-primary{ font-weight:700; }
+.btn-secondary{ font-weight:600; }
+
+.panel{ margin-top: 24px; }
+.hidden{ display:none; }
+
+/* Glow Ball */
+.glow-wrap{ display:flex; justify-content:center; margin: 28px 0; }
+.glow-ball{
+  width: 240px; height: 240px;
+  position: relative; border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      var(--neon-core) 0%,
+      var(--neon-core) 12%,
+      var(--neon-mid)  24%,
+      var(--neon-pink) 42%,
+      rgba(255,58,166,0.45) 60%,
+      rgba(255,58,166,0.18) 78%,
+      rgba(255,58,166,0.06) 100%);
+  transform: scale(1);
+  animation: breathe-soft 6s ease-in-out infinite;
+  will-change: transform, filter, box-shadow;
+}
+.glow-ball::after{
+  content:""; position:absolute; inset:-14%; border-radius:50%;
+  background: radial-gradient(circle at center,
+    rgba(255,58,166,0.38) 0%,
+    rgba(255,58,166,0.22) 45%,
+    rgba(255,58,166,0) 70%);
+  filter: blur(16px);
+  animation: halo-soft 6s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes breathe-soft{
+  0%{ transform:scale(.96); filter:none; }
+  50%{ transform:scale(1.04); filter:brightness(1.06) saturate(1.08); }
+  100%{ transform:scale(.96); filter:none; }
+}
+@keyframes halo-soft{
+  0%{ filter:blur(14px) brightness(1); opacity:.85; }
+  50%{ filter:blur(20px) brightness(1.1); opacity:1; }
+  100%{ filter:blur(14px) brightness(1); opacity:.85; }
+}
+
+/* 強烈版（可在元素上加 .glow-ball--strong 啟用） */
+.glow-ball--strong{
+  background:
+    radial-gradient(circle at 50% 50%,
+      #fff0fa 0%,
+      #ffd6eb 10%,
+      #ff8ccc 22%,
+      #ff3aa6 38%,
+      rgba(255,58,166,0.55) 58%,
+      rgba(255,58,166,0.24) 78%,
+      rgba(255,58,166,0.08) 100%);
+  animation: breathe-strong 6s ease-in-out infinite;
+  box-shadow:
+    0 0 18px rgba(255,58,166,0.28),
+    0 0 48px rgba(255,58,166,0.22),
+    0 0 96px rgba(255,58,166,0.14);
+}
+.glow-ball--strong::after{
+  inset:-18%;
+  background: radial-gradient(circle at center,
+    rgba(255,58,166,0.55) 0%,
+    rgba(255,58,166,0.30) 40%,
+    rgba(255,58,166,0) 72%);
+  filter: blur(22px);
+  animation: halo-strong 6s ease-in-out infinite;
+}
+@keyframes breathe-strong{
+  0%{ transform:scale(.94); filter:brightness(1.02) saturate(1.02); }
+  50%{ transform:scale(1.06); filter:brightness(1.15) saturate(1.15); }
+  100%{ transform:scale(.94); filter:brightness(1.02) saturate(1.02); }
+}
+
+/* 控制列 */
+.controls{ display:flex; gap:10px; justify-content:center; align-items:center; }
+.timer{ font-variant-numeric: tabular-nums; letter-spacing:.5px; }
+
+/* 計數器 */
+.counter{ font-size: var(--fs-counter); line-height: var(--lh-counter); opacity:.9; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+.counter .badge{ padding:6px 8px; border-radius:10px; background:rgba(255,58,166,0.10); border:1px solid rgba(255,58,166,0.28); }
+
+/* 覆蓋層 */
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,.75); backdrop-filter: blur(3px); display:flex; align-items:center; justify-content:center; z-index:99; }
+.overlay-card{ width:min(680px, 90vw); background:#0c0c0c; border:1px solid rgba(255,58,166,.28); border-radius:16px; padding:20px; }
+.overlay.hidden{ display:none; }

@@ -1,0 +1,30 @@
+[
+  {
+    "title": "威而鋼 + Rush（衝突風險）",
+    "desc": "硝酸鹽（Rush）與含硝酸鹽類藥物可能引發危險性低血壓。出現暈眩、胸悶或昏厥，請立即撥打 119。",
+    "actions": [
+      {
+        "label": "撥打 119",
+        "href": "tel:119"
+      },
+      {
+        "label": "急救步驟（基礎）",
+        "href": "https://www.hpa.gov.tw/"
+      }
+    ]
+  },
+  {
+    "title": "G 水（GHB/GBL）過量疑慮",
+    "desc": "避免嘔吐嗆入或呼吸抑制。保持側臥、確保呼吸道通暢，觀察瞳孔與呼吸。",
+    "actions": [
+      {
+        "label": "撥打 119",
+        "href": "tel:119"
+      },
+      {
+        "label": "穩定側臥法圖示",
+        "href": "https://www.redcross.org.tw/"
+      }
+    ]
+  }
+]

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Afterglow · 5 分鐘冥想 + 緊急支援</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="./manifest.webmanifest" type="application/manifest+json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="page">
+  <!-- 首次進站免責覆蓋層 -->
+  <div id="disclaimer" class="overlay hidden">
+    <div class="overlay-card">
+      <h2>使用前說明</h2>
+      <p>此工具僅提供冥想與減害資訊，不能取代專業醫療。若有人出現危及生命的症狀，請立刻撥打 119。</p>
+      <button id="agreeBtn" class="btn-primary">我了解並同意</button>
+    </div>
+  </div>
+
+  <main class="container">
+    <header class="hero">
+      <h1 class="brand">Afterglow</h1>
+      <p class="tagline">派對情境 · 5 分鐘冥想 + 緊急支援</p>
+    </header>
+
+    <section class="hero-actions">
+      <a class="btn-primary" href="#meditate" id="goMeditate">開始冥想</a>
+      <a class="btn-secondary" href="#support" id="goSupport">緊急支援</a>
+    </section>
+
+    <section id="meditate" class="panel hidden">
+      <div class="glow-wrap">
+        <div class="glow-ball" aria-label="呼吸球動畫"></div>
+      </div>
+      <div class="controls">
+        <button id="playBtn" class="btn-primary">播放</button>
+        <button id="pauseBtn" class="btn-secondary">暫停</button>
+        <span id="countdown" class="timer">05:00</span>
+      </div>
+      <audio id="audio" preload="auto">
+        <!-- 請將此檔替換為你的冥想音檔，副檔名可為 m4a/mp3；檔名保持一致可離線 -->
+        <source src="./audio/afterglow-5min.m4a" type="audio/mp4">
+      </audio>
+    </section>
+
+    <section id="support" class="panel hidden">
+      <h2>緊急支援</h2>
+      <div id="cards" class="cards"></div>
+    </section>
+
+    <footer class="footer">
+      <div class="counter">
+        <span class="badge">本次：<strong data-counter="session">0</strong></span>
+        <span class="badge">累計：<strong data-counter="total">0</strong></span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

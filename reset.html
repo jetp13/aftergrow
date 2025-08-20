@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<title>Afterglow SW Reset</title>
+<body style="background:#000;color:#fff;font-family:system-ui;padding:24px">
+<h1>Service Worker 重置</h1>
+<p>按下按鈕將嘗試移除目前網域下的 Service Worker 快取與註冊。</p>
+<button id="btn" style="padding:10px 16px">一鍵重置</button>
+<pre id="log" style="white-space:pre-wrap;margin-top:1rem"></pre>
+<script>
+(async function(){
+  const log = (t)=>{ document.getElementById('log').textContent += t + "\n"; };
+  document.getElementById('btn').addEventListener('click', async ()=>{
+    try{
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for(const r of regs){ await r.unregister(); log('Unregistered: ' + (r.scope||'')); }
+      if('caches' in window){
+        const keys = await caches.keys();
+        for(const k of keys){ await caches.delete(k); log('Cache deleted: ' + k); }
+      }
+      log('完成。請重新載入頁面。');
+    }catch(e){ log('失敗：' + e.message); }
+  });
+})();
+</script>
+</body>
+</html>
