@@ -1,3 +1,4 @@
+const SW_VERSION = "2025-11-03-1"; // force refresh
 const CACHE_NAME = 'afterglow-v1';
 const ASSETS = [
   './',

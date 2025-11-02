@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <!-- Afterglow Support v2025-11-02 -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Afterglow｜緊急支援</title>
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root{
+      --bg:#000; --fg:#fff; --muted:rgba(255,255,255,.7);
+      --pink:#ff4fa2; --blue:#4ec0ff; --gray:#222;
+      --glow-pink:0 0 20px rgba(255,79,162,.4);
+      --glow-blue:0 0 20px rgba(78,192,255,.4);
+    }
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Helvetica Neue",Arial,sans-serif;
+    }
+    .wrap{min-height:100%; display:flex; flex-direction:column; padding:16px 20px 40px; box-sizing:border-box;}
+    header{text-align:center; margin-bottom:20px;}
+    header h1{font-family:"Snell Roundhand","Zapfino",cursive; font-size:38px; margin:12px 0 6px;}
+    header small{color:var(--muted); letter-spacing:.2em; font-size:13px;}
+
+    .tabs{display:flex; justify-content:center; gap:10px; margin-bottom:16px;}
+    .tab-btn{
+      flex:1; padding:10px 6px; border-radius:30px;
+      background:var(--gray); border:none; color:var(--fg);
+      letter-spacing:.25em; font-size:14px;
+      transition:.2s; cursor:pointer;
+    }
+    .tab-btn.active{
+      background:linear-gradient(135deg,var(--pink),var(--blue));
+      box-shadow:var(--glow-pink);
+    }
+    .tab-panel{display:none; line-height:1.8; font-size:15px; color:var(--muted);}
+    .tab-panel.active{display:block;}
+
+    footer{text-align:center; margin-top:auto; font-size:13px; color:var(--muted);}
+    footer a{color:var(--pink); text-decoration:none;}
+
+    @media(max-width:400px){
+      header h1{font-size:32px;}
+      .tab-btn{font-size:13px;}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>Afterglow</h1>
+      <small>緊急支援模組</small>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="body">穩住你的身體</button>
+      <button class="tab-btn" data-tab="mind">看清你的狀況</button>
+      <button class="tab-btn" data-tab="rights">保持你的界線</button>
+    </div>
+
+    <section id="body" class="tab-panel active">
+      <h3>🌡️ 穩住你的身體</h3>
+      <p>放慢呼吸、遠離噪音與人群，讓自己坐下或躺平。若有朋友在場，請他陪伴你保持安全。</p>
+      <p>喝一點水、保持呼吸順暢。若覺得頭暈或無法站穩，請立即尋求醫療協助。</p>
+    </section>
+
+    <section id="mind" class="tab-panel">
+      <h3>🧠 看清你的狀況</h3>
+      <p>嘗試回想你使用了哪些物質、劑量與時間。若有混用，請優先觀察呼吸與心跳。</p>
+      <p>若出現胸悶、劇烈焦慮、幻覺或抽搐，請立即撥打 <strong>119</strong> 或前往急診。</p>
+    </section>
+
+    <section id="rights" class="tab-panel">
+      <h3>🛡️ 保持你的界線</h3>
+      <p>無論任何情況，你都有權說「不」。若感到被逼迫、侵犯或威脅，請盡快離開現場並尋求協助。</p>
+      <p>在面對執法人員時，保持冷靜，僅提供必要資訊。你有權要求律師陪同並保持沉默。</p>
+    </section>
+
+    <footer>
+      <p><a href="Home.html">← 回首頁</a></p>
+    </footer>
+  </main>
+
+  <script>
+    // 守門檢查
+    (function(){
+      try{
+        if(localStorage.getItem('afterglow_age_ok')!=='1'){
+          location.replace('index.html'); return;
+        }
+      }catch(e){ location.replace('index.html'); }
+    })();
+
+    // 分頁切換邏輯
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
