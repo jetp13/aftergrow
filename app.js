@@ -23,7 +23,7 @@ showPanel(location.hash || '#');
       overlay.classList.remove('hidden');
       document.getElementById('agreeBtn').addEventListener('click', () => {
         try{ localStorage.setItem('ag_disclaimer_ok', '1'); }catch(e){}
-        overlay.classList.add('hidden');
+        location.href = 'Home.html';
       });
     }
   } catch(e){}
