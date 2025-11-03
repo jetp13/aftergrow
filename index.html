@@ -1,44 +1,105 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-  <!-- Afterglow Index v2025-11-02 -->
-  <link rel="apple-touch-icon" href="./apple-touch-icon-180.png">
-<link rel="manifest" href="./manifest.webmanifest" type="application/manifest+json">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Afterglow</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#111113">
+  <style>
+    /* C1 深夜觀察者：黑底＋玫瑰金霓虹 */
+    :root{
+      --bg:#0b0b0c;
+      --fg:#f6f6f6;
+      --muted:#b7b7bb;
+      --glow:#ff3e9e; /* 霓虹粉 */
+      --glow2:#ff6f61; /* 玫瑰橙 */
+      --capH:64px;
+      --capR:32px;
+      --maxW:520px;
+    }
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      display:flex; align-items:center; justify-content:center;
+    }
+    .wrap{
+      width:100%; max-width:var(--maxW); padding:24px 20px 32px;
+      display:flex; flex-direction:column; gap:28px;
+    }
+    header h1{margin:0; font-size:20px; letter-spacing:0.04em; font-weight:600}
+    header p{margin:4px 0 0; color:var(--muted); font-size:13px}
+    .capsules{display:grid; grid-template-columns:1fr; gap:18px; margin-top:4px}
+    @media (min-width:460px){ .capsules{grid-template-columns:1fr 1fr} }
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Afterglow · 5 分鐘冥想 + 緊急支援</title>
-  <meta name="theme-color" content="#000000">
-  <link rel="manifest" href="./manifest.webmanifest" type="application/manifest+json">
-  <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css">
+    .cap{
+      position:relative;
+      height:var(--capH);
+      border-radius:var(--capR);
+      background:linear-gradient(90deg, rgba(255,62,158,.08), rgba(255,111,97,.08));
+      border:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; color:var(--fg); font-weight:600; letter-spacing:.02em;
+      box-shadow: 0 0 24px rgba(255,62,158,.25), inset 0 0 18px rgba(255,111,97,.12);
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .cap:focus, .cap:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.18);
+      box-shadow: 0 0 36px rgba(255,62,158,.35), inset 0 0 24px rgba(255,111,97,.22); }
+    .cap .sub{ position:absolute; bottom:-18px; font-size:11px; color:var(--muted); font-weight:500; letter-spacing:.02em }
+    footer{
+      margin-top:8px; display:flex; justify-content:space-between; align-items:center; gap:12px;
+      color:var(--muted); font-size:12px;
+    }
+    .tiny-link{ color:var(--muted); text-decoration:none; border-bottom:1px dotted rgba(255,255,255,.2); }
+    .tiny-link:hover{ color:#e9e9ea; }
+    .counter{opacity:.85}
+  </style>
+  <script>
+    // 註冊 SW（僅在 /afterglow/ 下）
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const scope = new URL('./', location.href).pathname; // /afterglow/
+        navigator.serviceWorker.register('./service-worker.js', { scope })
+          .catch(console.warn);
+      });
+    }
+  </script>
 </head>
-<body class="page">
-  <!-- 首次進站免責覆蓋層 -->
-  <div id="disclaimer" class="overlay hidden">
-    <div class="overlay-card">
-      <h2>使用前說明</h2>
-      <p>此工具僅提供冥想與減害資訊，不能取代專業醫療。若有人出現危及生命的症狀，請立刻撥打 119。</p>
-      <button id="agreeBtn" class="btn-primary">我了解並同意</button>
-    </div>
-  </div>
-
-  <main class="container">
-    <header class="hero">
-      <h1 class="brand">Afterglow</h1>
-      <p class="tagline">派對情境 · 5 分鐘冥想 + 緊急支援</p>
+<body>
+  <div class="wrap" role="main">
+    <header>
+      <h1>Afterglow</h1>
+      <p>讓理性有溫度，讓創意有結構。</p>
     </header>
 
+    <section class="capsules" aria-label="主功能">
+      <!-- 膠囊 A：緊急支援 -->
+      <a class="cap" href="./emergency/index.html" aria-label="前往緊急支援">
+        緊急支援
+        <span class="sub">症狀應對・風險提示</span>
+      </a>
+      <!-- 膠囊 B：呼吸冥想 -->
+      <a class="cap" href="./breath/index.html" aria-label="前往呼吸冥想">
+        呼吸冥想
+        <span class="sub">Glow Ball・引導練習</span>
+      </a>
+    </section>
 
-
-    <footer class="footer">
-      <div class="counter">
-        <span class="badge">本次：<strong data-counter="session">0</strong></span>
-        <span class="badge">累計：<strong data-counter="total">0</strong></span>
-      </div>
+    <footer>
+      <a class="tiny-link" href="./privacy.html">隱私政策</a>
+      <span class="counter" aria-label="訪問人數">Visitors: <span id="vc">—</span></span>
     </footer>
-  </main>
+  </div>
 
-  <script src="./app.js"></script>
+  <script>
+    // 極簡訪問數（可替換為你的計數方案；預設顯示 em-dash）
+    try {
+      const n = localStorage.getItem('ag_vc') || 0;
+      const v = (+n || 0) + 1;
+      localStorage.setItem('ag_vc', v);
+      document.getElementById('vc').textContent = v.toLocaleString();
+    } catch(e){}
+  </script>
 </body>
 </html>
