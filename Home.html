@@ -1,124 +1,86 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <!-- Afterglow Home v2025-11-02 -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Afterglow｜Home</title>
-  <meta name="color-scheme" content="dark" />
+  <title>Afterglow</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#111113">
   <style>
     :root{
-      --bg:#000; --fg:#f5f5f5; --muted:rgba(255,255,255,.66);
-      --blue:#4ec0ff; --blue-deep:#0c68d2;
-      --pink:#ff4fa2; --pink-deep:#8d1e67;
-      --glow-1: 0 0 32px rgba(78,192,255,.45), 0 0 12px rgba(78,192,255,.35);
-      --glow-2: 0 0 32px rgba(255,79,162,.45), 0 0 12px rgba(255,79,162,.35);
+      --bg:#0b0b0c; --fg:#f6f6f6; --muted:#b7b7bb;
+      --glow:#ff3e9e; --glow2:#ff6f61;
+      --capH:64px; --capR:32px; --maxW:520px;
     }
     html,body{height:100%}
     body{
-      margin:0;background:var(--bg);color:var(--fg);
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Helvetica Neue",Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial;
+      display:flex; align-items:center; justify-content:center;
     }
-    .wrap{min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:28px 16px 28px; box-sizing:border-box}
-
-    .hero{text-align:center; margin-top:8vh}
-    .brand{
-      font-size:48px; line-height:1; color:#fff;
-      font-family:"Snell Roundhand","Zapfino","Bradley Hand",cursive;
-      text-shadow:0 0 6px rgba(255,255,255,.2);
-    }
-    .subtitle{
-      margin-top:16px; color:var(--muted); font-size:14px; letter-spacing:.18em;
-    }
-    .subtitle small{display:block; margin-top:8px; font-size:12px; opacity:.8; letter-spacing:.18em}
-
-    .caps{width:min(520px,88vw); margin:10vh auto 0; display:flex; flex-direction:column; gap:26px}
+    .wrap{ width:100%; max-width:var(--maxW); padding:24px 20px 32px; display:flex; flex-direction:column; gap:28px; }
+    header h1{margin:0; font-size:20px; letter-spacing:.04em; font-weight:600}
+    header p{margin:4px 0 0; color:var(--muted); font-size:13px}
+    .capsules{display:grid; grid-template-columns:1fr; gap:18px; margin-top:4px}
+    @media (min-width:460px){ .capsules{grid-template-columns:1fr 1fr} }
     .cap{
-      display:block; text-decoration:none; color:#fff; text-align:center; font-size:22px; letter-spacing:.4em;
-      border-radius:9999px; padding:18px 24px; min-height:64px; line-height:1; position:relative;
-      box-shadow: inset 0 0 0 3px rgba(255,255,255,.12);
-      transition: transform .06s ease, opacity .2s ease;
-      user-select:none; -webkit-tap-highlight-color:transparent;
+      position:relative; height:var(--capH); border-radius:var(--capR);
+      background:linear-gradient(90deg, rgba(255,62,158,.08), rgba(255,111,97,.08));
+      border:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; color:var(--fg); font-weight:600; letter-spacing:.02em;
+      box-shadow:0 0 24px rgba(255,62,158,.25), inset 0 0 18px rgba(255,111,97,.12);
+      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
-    .cap:active{ transform:scale(.985) }
-    .cap--blue{
-      background: radial-gradient(120% 140% at 50% 0%, rgba(78,192,255,.25) 0%, rgba(12,104,210,.12) 65%, rgba(12,104,210,.05) 100%);
-      box-shadow: var(--glow-1), inset 0 0 0 2px rgba(78,192,255,.55);
-      text-shadow:0 0 12px rgba(255,255,255,.55);
-    }
-    .cap--pink{
-      background: radial-gradient(120% 140% at 50% 0%, rgba(255,79,162,.28) 0%, rgba(141,30,103,.12) 65%, rgba(141,30,103,.05) 100%);
-      box-shadow: var(--glow-2), inset 0 0 0 2px rgba(255,79,162,.55);
-      text-shadow:0 0 12px rgba(255,255,255,.55);
-    }
-
-    .footer{text-align:center; margin-top:auto; padding-top:10vh}
-    .note{color:var(--muted); font-size:14px; letter-spacing:.12em}
-    .count{margin-top:10px; font-size:13px; color:rgba(255,255,255,.55); letter-spacing:.3em}
-    .links{margin-top:12px}
-    .small-link{opacity:.45; color:#fff; text-decoration:none; font-size:12px; margin:0 8px}
-    .small-link:hover{opacity:.85}
-
-    @supports(padding: env(safe-area-inset-bottom)){
-      .wrap{padding-bottom: calc(28px + env(safe-area-inset-bottom));}
-    }
-    @media (max-width:360px){
-      .brand{font-size:40px}
-      .cap{font-size:20px; padding:16px 20px}
-    }
+    .cap:focus, .cap:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.18);
+      box-shadow:0 0 36px rgba(255,62,158,.35), inset 0 0 24px rgba(255,111,97,.22); }
+    .cap .sub{ position:absolute; bottom:-18px; font-size:11px; color:var(--muted); font-weight:500; letter-spacing:.02em }
+    footer{ margin-top:8px; display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); font-size:12px; }
+    .tiny-link{ color:var(--muted); text-decoration:none; border-bottom:1px dotted rgba(255,255,255,.2); }
+    .tiny-link:hover{ color:#e9e9ea; }
+    .counter{opacity:.85}
   </style>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const scope = new URL('./', location.href).pathname; // /afterglow/
+        navigator.serviceWorker.register('./service-worker.js', { scope })
+          .catch(console.warn);
+      });
+    }
+  </script>
 </head>
 <body>
-  <main class="wrap" role="main">
-    <section class="hero" aria-label="品牌與標語">
-      <div class="brand">Afterglow</div>
-      <div class="subtitle">
-        快速上陣指南
-        <small>STAY SAFE ・ CARE FOR YOURSELF ・ SEEK HELP</small>
-      </div>
+  <div class="wrap" role="main">
+    <header>
+      <h1>Afterglow</h1>
+      <p>讓理性有溫度，讓創意有結構。</p>
+    </header>
+
+    <section class="capsules" aria-label="主功能">
+      <a class="cap" href="./emergency/index.html" aria-label="前往緊急支援">
+        緊急支援
+        <span class="sub">症狀應對・風險提示</span>
+      </a>
+      <a class="cap" href="./breath/index.html" aria-label="前往呼吸冥想">
+        呼吸冥想
+        <span class="sub">Glow Ball・引導練習</span>
+      </a>
     </section>
 
-    <nav class="caps" aria-label="主選單">
-      <a class="cap cap--blue" href="Breathing.html" role="button">開 始 冥 想</a>
-      <a class="cap cap--pink" href="Support.html" role="button">緊 急 支 援</a>
-    </nav>
-
-    <footer class="footer">
-      <div class="note">Aftergrow 完整內容即將上線　敬　請　期　待</div>
-      <div id="visit" class="count">訪問人數：0000</div>
-      <div class="links">
-        <a class="small-link" href="#" id="resetGate">重置年齡確認</a>
-        <a class="small-link" href="privacy.html">隱私政策</a>
-      </div>
+    <footer>
+      <a class="tiny-link" href="./privacy.html">隱私政策</a>
+      <span class="counter" aria-label="訪問人數">Visitors: <span id="vc">—</span></span>
     </footer>
-  </main>
+  </div>
 
   <script>
-    // 守門：若未勾選免責，導回 index.html
-    (function(){
-      try{
-        if(localStorage.getItem('afterglow_age_ok')!=='1'){
-          location.replace('index.html'); return;
-        }
-      }catch(e){ location.replace('index.html'); }
-    })();
-
-    // 訪問人數（僅本機示意）
-    (function(){
-      const el = document.getElementById('visit');
-      const key = 'ag_visit_count';
-      let n = parseInt(localStorage.getItem(key)||'0',10)+1;
-      localStorage.setItem(key,n);
-      el.textContent = '訪問人數：' + String(n).padStart(4,'0');
-    })();
-
-    // 重置年齡確認
-    document.getElementById('resetGate').addEventListener('click', e=>{
-      e.preventDefault();
-      localStorage.removeItem('afterglow_age_ok');
-      location.href = 'index.html';
-    });
+    try{
+      const n = localStorage.getItem('ag_vc') || 0;
+      const v = (+n||0)+1;
+      localStorage.setItem('ag_vc', v);
+      document.getElementById('vc').textContent = v.toLocaleString();
+    }catch(e){}
   </script>
 </body>
 </html>
