@@ -3,72 +3,66 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Afterglow｜免責聲明</title>
+  <title>Afterglow｜進入前同意</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#111113">
   <style>
-    :root{ --bg:#0b0b0c; --fg:#f6f6f6; --muted:#b7b7bb; --glow:#ff3e9e; --glow2:#ff6f61; --card:#121214 }
+    :root{
+      --bg:#0b0b0c; --panel:#141416; --fg:#f5f5f6; --muted:#b6b7bb;
+      --accent:#ff3e9e; --accent2:#ff6f61; --border:rgba(255,255,255,.12);
+      --maxW:560px;
+    }
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Helvetica Neue"}
-    .wrap{max-width:720px;margin:0 auto;padding:24px 18px 40px}
-    h1{margin:8px 0 12px;font-size:20px;letter-spacing:.04em}
-    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px 16px;box-shadow:0 0 24px rgba(255,62,158,.12)}
-    .card h2{margin:0 0 8px;font-size:16px}
-    .card p{margin:8px 0;color:#ddd;line-height:1.65}
-    .muted{color:var(--muted);font-size:13px}
-    .row{display:flex;align-items:center;gap:10px;margin-top:14px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(90deg,rgba(255,62,158,.12),rgba(255,111,97,.12));color:#fff;text-decoration:none;font-weight:700;letter-spacing:.02em;cursor:not-allowed;opacity:.6}
-    .btn.ready{cursor:pointer;opacity:1;box-shadow:0 0 18px rgba(255,62,158,.25)}
-    .tiny{font-size:12px}
-    footer{margin-top:18px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
-    a.tiny-link{color:var(--muted);text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.25)}
-    a.tiny-link:hover{color:#e9e9ea}
-    .chk{accent-color:#ff3e9e}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .card{
+      width:100%; max-width:var(--maxW); background:var(--panel);
+      border:1px solid var(--border); border-radius:16px; padding:24px 20px;
+      box-shadow:0 0 24px rgba(255,62,158,.18), inset 0 0 18px rgba(255,111,97,.06);
+    }
+    h1{margin:0 0 6px; font-size:20px; letter-spacing:.04em}
+    .sub{margin:0 0 18px; color:var(--muted); font-size:13px}
+    .box{
+      background:#0e0e10; border:1px solid var(--border); border-radius:12px;
+      padding:16px; line-height:1.7; font-size:14px; color:#e7e7e9;
+    }
+    .box b{color:#fff}
+    .agree{
+      display:flex; align-items:flex-start; gap:10px; margin:16px 0 12px; color:#ddd; font-size:14px;
+    }
+    .agree input{margin-top:3px; transform:scale(1.2)}
+    .btn{
+      width:100%; height:52px; border-radius:26px; border:1px solid var(--border);
+      background:linear-gradient(90deg, rgba(255,62,158,.15), rgba(255,111,97,.15));
+      color:#fff; font-weight:700; letter-spacing:.02em;
+      box-shadow:0 0 20px rgba(255,62,158,.25), inset 0 0 14px rgba(255,111,97,.12);
+      cursor:pointer; transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .btn:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.18);
+      box-shadow:0 0 28px rgba(255,62,158,.35), inset 0 0 20px rgba(255,111,97,.2); }
+    .row{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:10px; color:var(--muted); font-size:12px}
+    .row a{color:var(--muted); text-decoration:none; border-bottom:1px dotted rgba(255,255,255,.2)}
+    .row a:hover{color:#eee}
+    .err{color:#ff9aa3; font-size:12px; min-height:18px}
   </style>
   <script>
-    // 若已同意過，直接進首頁
+    // 已同意就直接進站
     (function(){
-      try{
-        const ok = localStorage.getItem('ag_consent_v1') === '1';
-        if(ok) location.replace('./home.html');
-      }catch(e){}
+      try {
+        if (localStorage.getItem('ag_consent') === 'yes') {
+          location.replace('./home.html');
+        }
+      } catch(e){}
     })();
 
-    // 註冊 SW（限制在 /afterglow/）
-    if('serviceWorker' in navigator){
-      addEventListener('load', () => {
-        const scope = new URL('./', location.href).pathname;
-        navigator.serviceWorker.register('./service-worker.js', { scope }).catch(()=>{});
+    // 註冊 SW（限定在 /afterglow/）
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const scope = new URL('./', location.href).pathname; // /afterglow/
+        navigator.serviceWorker.register('./service-worker.js', { scope }).catch(console.warn);
       });
     }
-  </script>
-</head>
-<body>
-  <main class="wrap" role="main" aria-labelledby="ttl">
-    <h1 id="ttl">Afterglow｜免責聲明</h1>
-
-    <section class="card" aria-label="免責內容">
-      <h2>重要聲明</h2>
-      <p>本網站提供之內容僅作為一般性教育資訊與自助參考，<strong>不構成醫療或法律意見</strong>。Afterglow 不鼓勵、推廣或美化任何違法行為；任何行為之法律責任由行為人自負。</p>
-      <p>若你出現緊急或危及生命之情況，請立即尋求當地急救與專業支援。</p>
-      <p class="muted tiny">版本：v2025-11-04　範圍：afterglow/　© Afterglow</p>
-
-      <div class="row">
-        <label><input id="age" class="chk" type="checkbox"> 我已年滿 18 歲並同意上述內容</label>
-      </div>
-      <div class="row">
-        <button id="go" class="btn" disabled>我同意並進入</button>
-      </div>
-      <p class="muted tiny">※ 此同意會保存在你的裝置上；清除網站資料後將需重新確認。</p>
-    </section>
-
-    <footer>
-      <a class="tiny-link" href="./privacy.html">隱私政策</a>
-      <span>© Afterglow</span>
-    </footer>
-  </main>
-
-  <script>
-    const age = document.getElementById('age');
-    const go  = document.getElementById('go');
+  </scrip
