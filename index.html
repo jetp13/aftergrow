@@ -53,16 +53,71 @@
     (function(){
       try {
         if (localStorage.getItem('ag_consent') === 'yes') {
-          location.replace('./home.html');
+          location.replace('./Home.html');
         }
       } catch(e){}
     })();
 
-    // 註冊 SW（限定在 /afterglow/）
+    // 註冊 SW（限定在 /aftergrow/）
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        const scope = new URL('./', location.href).pathname; // /afterglow/
-        navigator.serviceWorker.register('./service-worker.js', { scope }).catch(console.warn);
+        const scope = new URL('./', location.href).pathname;
+        navigator.serviceWorker.register('./sw.js', { scope }).catch(console.warn);
       });
     }
-  </scrip
+  </script>
+</head>
+<body>
+  <div class="card">
+    <h1>Afterglow｜進入前同意</h1>
+    <p class="sub">請仔細閱讀以下內容後再繼續</p>
+    
+    <div class="box">
+      <b>使用須知</b><br>
+      本網站提供減害資訊與冥想引導，內容涉及成人議題。<br>
+      使用前請確認：<br>
+      • 您已年滿 18 歲<br>
+      • 您理解本站不鼓勵、推廣或美化任何違法行為<br>
+      • 本站內容僅供參考，不構成醫療或法律建議<br>
+      • 如需專業協助，請洽具資格之專業人員
+    </div>
+
+    <label class="agree">
+      <input type="checkbox" id="chk">
+      <span>我已年滿 18 歲，並同意上述使用條款</span>
+    </label>
+
+    <div class="err" id="err"></div>
+
+    <button class="btn" id="btnEnter">進入 Afterglow</button>
+
+    <div class="row">
+      <a href="./privacy.html">隱私政策</a>
+      <a href="./disclaimer.html">免責聲明</a>
+    </div>
+  </div>
+
+  <script>
+    const chk = document.getElementById('chk');
+    const btn = document.getElementById('btnEnter');
+    const err = document.getElementById('err');
+
+    btn.addEventListener('click', () => {
+      if (!chk.checked) {
+        err.textContent = '請先勾選同意條款';
+        return;
+      }
+      try {
+        localStorage.setItem('ag_consent', 'yes');
+        location.href = './Home.html';
+      } catch(e) {
+        location.href = './Home.html';
+      }
+    });
+
+    chk.addEventListener('change', () => {
+      if (chk.checked) err.textContent = '';
+    });
+  </script>
+</body>
+</html>
