@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Afterglow｜呼吸冥想</title>
+  <meta name="description" content="跟著粉色呼吸球的節奏，吸六、停二、吐八，約五分鐘回到穩定與當下。" />
+  <link rel="icon" href="./assets/favicon.png" />
+  <link rel="stylesheet" href="./css/main.css" />
+
+  <style>
+    :root{
+      --bg:#000;
+      --core:#ff4d88;                 /* 粉色核心 */
+      --glowA: rgba(255,77,136,.50);  /* 外層暈光 */
+      --glowB: rgba(255,77,136,.25);  /* 更外層暈光 */
+      --fadeIn: 6s;                   /* 入場淡入 */
+      --fadeOut: 4s;                  /* 結束淡出 */
+      --loop: 16s;                    /* 6-2-8 = 16s */
+      --total: 304s;                  /* 16s * 19 ≈ 5:04 */
+    }
+
+    html,body{
+      margin:0; height:100%;
+      background:var(--bg);
+      color:#fff; overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* 右上角：只保留回首頁 */
+    header{
+      position:fixed; top:0; right:0; z-index:10;
+      padding:14px 18px;
+    }
+    header button{
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.28);
+      color:#fff; padding:8px 16px;
+      border-radius:999px; font-weight:600; font-size:14px;
+      backdrop-filter: blur(10px);
+      cursor:pointer; transition: all .2s ease;
+    }
+    header button:hover{
+      border-color: rgba(255,77,136,.6);
+      box-shadow: 0 0 12px rgba(255,77,136,.45);
+    }
+
+    /* 場景容器：球心定位於視窗高度約 60% */
+    .stage{
+      position:relative; width:100%; height:100vh;
+      opacity:0; animation: fadeIn var(--fadeIn) ease-in forwards;
+    }
+    .ball{
+      position:absolute; left:50%; top:60vh;  /* 球心在 60% 視高 */
+      width:80vmin; height:80vmin;            /* 中位：80vmin */
+      transform: translate(-50%,-50%) scale(.25); /* 最小 ≈ 20% */
+      border-radius:50%;
+      background: radial-gradient(circle at 50% 45%, var(--core) 0%, rgba(255,77,136,.9) 40%, rgba(255,77,136,.5) 65%, transparent 75%);
+      box-shadow:
+        0 0 80px var(--glowA),
+        0 0 160px var(--glowB);
+      filter: saturate(1.05);
+      will-change: transform, opacity, filter;
+      animation: breathe var(--loop) ease-in-out infinite;
+    }
+
+    /* 外層柔光（兩層即可，控耗能） */
+    .ball::before, .ball::after{
+      content:""; position:absolute; inset:-10%;
+      border-radius:inherit; pointer-events:none;
+    }
+    .ball::before{
+      box-shadow: 0 0 120px 40px var(--glowA);
+    }
+    .ball::after{
+      inset:-22%;
+      box-shadow: 0 0 220px 80px var(--glowB);
+    }
+
+    /* 6-2-8：吸(0→37.5%)、停(37.5→50%)、吐(50→100%) */
+    @keyframes breathe{
+      0%   { transform: translate(-50%,-50%) scale(.25);  filter:brightness(.95); }
+      37.5%{ transform: translate(-50%,-50%) scale(1.35); filter:brightness(1.05); }
+      50%  { transform: translate(-50%,-50%) scale(1.35); filter:brightness(1.06); }
+      100% { transform: translate(-50%,-50%) scale(.25);  filter:brightness(.95); }
+    }
+
+    @keyframes fadeIn{
+      from{ opacity:0; } to{ opacity:1; }
+    }
+    @keyframes fadeOut{
+      from{ opacity:1; } to{ opacity:0; }
+    }
+
+    /* 結束 4 秒淡出（由 JS 於最後觸發） */
+    .fade-out{
+      animation: fadeOut var(--fadeOut) ease-out forwards !important;
+    }
+
+    /* 低電量模式（可選）：降低光暈強度 */
+    @media (prefers-reduced-motion: reduce){
+      .ball{ animation-duration: calc(var(--loop) * 1.2); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button onclick="window.location.href='./Home.html'">回首頁</button>
+  </header>
+
+  <main class="stage">
+    <div class="ball" id="ball"></div>
+  </main>
+
+  <!-- 可選環境音：若不使用，刪除此 <audio> 與下方音量控制 JS 即可 -->
+  <audio id="amb" src="./assets/fire.mp3" preload="auto"></audio>
+
+  <script>
+    // 參數（毫秒）
+    const TOTAL = 304000;     // ≈ 5:04
+    const FADE_IN = 6000;     // 音量淡入 6s
+    const FADE_OUT = 4000;    // 音量淡出 4s
+
+    const ball = document.getElementById('ball');
+    const amb  = document.getElementById('amb');
+
+    // ---- 音量 6 秒淡入（行動端自動播放限制，如需互動才會開始） ----
+    const safePlay = () => amb.play().catch(() => {/* 行動端需使用者互動才允許播放 */});
+    amb.volume = 0;
+    safePlay();
+    const fadeInTimer = setInterval(() => {
+      if (amb.volume < 0.99){
+        amb.volume = Math.min(amb.volume + (0.1), 1); // 每 100ms +0.1 → 約 1s 滿
+      } else {
+        amb.volume = 1; clearInterval(fadeInTimer);
+      }
+    }, FADE_IN / 10); // 6s / 10 = 600ms 步進，避免突兀
+
+    // ---- 結束前 4 秒：球與音量同步淡出 ----
+    setTimeout(() => {
+      // 視覺淡出
+      ball.classList.add('fade-out');
+
+      // 音量淡出
+      const step = 100; // 每 100ms 降一點
+      const delta = step / FADE_OUT; // 100ms / 4000ms = 0.025
+      const fadeOutTimer = setInterval(() => {
+        amb.volume = Math.max(amb.volume - delta, 0);
+        if (amb.volume <= 0.01){
+          amb.volume = 0; clearInterval(fadeOutTimer); amb.pause();
+        }
+      }, step);
+    }, TOTAL - FADE_OUT);
+
+    // ---- 保底：若使用者第一次互動（點擊）才允許播放，立即淡入至目標音量 ----
+    window.addEventListener('pointerdown', () => {
+      if (amb.paused) {
+        amb.play().then(()=>{ amb.volume = 0.8; }).catch(()=>{});
+      }
+    }, { once:true });
+  </script>
+</body>
+</html>
