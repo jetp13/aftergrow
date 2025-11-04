@@ -2,122 +2,125 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Afterglow｜進入前同意</title>
-  <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#111113">
-  <style>
-    :root{
-      --bg:#0b0b0c; --panel:#141416; --fg:#f5f5f6; --muted:#b6b7bb;
-      --accent:#ff3e9e; --accent2:#ff6f61; --border:rgba(255,255,255,.12);
-      --maxW:560px;
-    }
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--fg);
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .card{
-      width:100%; max-width:var(--maxW); background:var(--panel);
-      border:1px solid var(--border); border-radius:16px; padding:24px 20px;
-      box-shadow:0 0 24px rgba(255,62,158,.18), inset 0 0 18px rgba(255,111,97,.06);
-    }
-    h1{margin:0 0 6px; font-size:20px; letter-spacing:.04em}
-    .sub{margin:0 0 18px; color:var(--muted); font-size:13px}
-    .box{
-      background:#0e0e10; border:1px solid var(--border); border-radius:12px;
-      padding:16px; line-height:1.7; font-size:14px; color:#e7e7e9;
-    }
-    .box b{color:#fff}
-    .agree{
-      display:flex; align-items:flex-start; gap:10px; margin:16px 0 12px; color:#ddd; font-size:14px;
-    }
-    .agree input{margin-top:3px; transform:scale(1.2)}
-    .btn{
-      width:100%; height:52px; border-radius:26px; border:1px solid var(--border);
-      background:linear-gradient(90deg, rgba(255,62,158,.15), rgba(255,111,97,.15));
-      color:#fff; font-weight:700; letter-spacing:.02em;
-      box-shadow:0 0 20px rgba(255,62,158,.25), inset 0 0 14px rgba(255,111,97,.12);
-      cursor:pointer; transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-    .btn:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.18);
-      box-shadow:0 0 28px rgba(255,62,158,.35), inset 0 0 20px rgba(255,111,97,.2); }
-    .row{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:10px; color:var(--muted); font-size:12px}
-    .row a{color:var(--muted); text-decoration:none; border-bottom:1px dotted rgba(255,255,255,.2)}
-    .row a:hover{color:#eee}
-    .err{color:#ff9aa3; font-size:12px; min-height:18px}
-  </style>
-  <script>
-    // 已同意就直接進站
-    (function(){
-      try {
-        if (localStorage.getItem('ag_consent') === 'yes') {
-          location.replace('./Home.html');
-        }
-      } catch(e){}
-    })();
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Afterglow｜入口</title>
+  <meta name="description" content="Afterglow：呼吸冥想與緊急支援入口" />
+  <meta property="og:title" content="Afterglow" />
+  <meta property="og:site_name" content="Afterglow" />
+  <meta property="og:type" content="website" />
+  <!-- 不硬寫 repo 名，僅作展示用途 -->
+  <meta property="og:url" content="https://jetp13.github.io/aftergrow/" />
 
-    // 註冊 SW（限定在 /aftergrow/）
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        const scope = new URL('./', location.href).pathname;
-        navigator.serviceWorker.register('./sw.js', { scope }).catch(console.warn);
-      });
+  <!-- 相對路徑：若你有全站樣式，會覆蓋內建保底樣式 -->
+  <link rel="icon" href="./assets/favicon.png" />
+  <link rel="stylesheet" href="./css/main.css" />
+
+  <style>
+    /* 保底樣式（有 main.css 時會被覆蓋） */
+    :root { --bg:#0b0b0d; --fg:#f6f6f6; --muted:#b7b7c0; --accent:#ff4d88; }
+    html,body { margin:0; padding:0; background:#000; color:var(--fg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", sans-serif; }
+    .wrap { min-height:100svh; display:flex; align-items:center; justify-content:center; }
+    .card {
+      width:min(720px, 92vw); border:1px solid #222; background:linear-gradient(180deg,#0b0b0d, #0a0a0a);
+      border-radius:16px; padding:28px 20px; box-shadow:0 0 40px rgba(255,77,136,0.12);
     }
-  </script>
+    .logo { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+    .logo img { height:28px; width:auto; }
+    h1 { font-size:20px; margin:0 0 8px; letter-spacing:0.02em; }
+    p.sub { margin:0 0 18px; color:var(--muted); font-size:14px; line-height:1.6; }
+    .consent { display:flex; align-items:flex-start; gap:10px; margin:14px 0 18px; }
+    .consent input { margin-top:2px; transform: translateY(2px); }
+    .actions { display:flex; gap:12px; }
+    .btn {
+      appearance:none; border:1px solid #333; background:#111; color:#fff; padding:12px 18px; border-radius:999px;
+      font-weight:600; cursor:pointer; transition: all .2s ease; letter-spacing:0.02em;
+    }
+    .btn.primary { background: var(--accent); border-color: transparent; }
+    .btn:disabled { opacity:.45; cursor:not-allowed; }
+    footer { margin-top:18px; display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:12px; }
+    footer nav a { color:var(--muted); text-decoration: none; margin-right:14px; }
+    footer nav a:hover { color:#fff; text-decoration: underline; }
+    .legal { opacity:.85; }
+    .hint { font-size:12px; color:#888; margin-top:10px; }
+    @media (max-width:420px){
+      .actions { flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Afterglow｜進入前同意</h1>
-    <p class="sub">請仔細閱讀以下內容後再繼續</p>
-    
-    <div class="box">
-      <b>使用須知</b><br>
-      本網站提供減害資訊與冥想引導，內容涉及成人議題。<br>
-      使用前請確認：<br>
-      • 您已年滿 18 歲<br>
-      • 您理解本站不鼓勵、推廣或美化任何違法行為<br>
-      • 本站內容僅供參考，不構成醫療或法律建議<br>
-      • 如需專業協助，請洽具資格之專業人員
+  <noscript>
+    <div style="padding:12px;background:#330; color:#fff; text-align:center;">
+      本頁需要啟用 JavaScript 才能繼續。
     </div>
+  </noscript>
 
-    <label class="agree">
-      <input type="checkbox" id="chk">
-      <span>我已年滿 18 歲，並同意上述使用條款</span>
-    </label>
+  <div class="wrap">
+    <main class="card" role="main">
+      <div class="logo">
+        <img src="./assets/logo.svg" alt="Afterglow 標誌" onerror="this.style.display='none'">
+        <h1>Afterglow｜入口</h1>
+      </div>
+      <p class="sub">開始前，請先確認您已年滿 18 歲並同意免責聲明與隱私政策。勾選同意後可進入首頁。</p>
 
-    <div class="err" id="err"></div>
+      <label class="consent">
+        <input type="checkbox" id="agree" />
+        <span>我已年滿 18 歲，並同意本站的 <a href="./disclaimer.html">免責聲明</a> 與 <a href="./privacy.html">隱私政策</a>。</span>
+      </label>
 
-    <button class="btn" id="btnEnter">進入 Afterglow</button>
+      <div class="actions">
+        <button id="enterBtn" class="btn primary" disabled>進入 Afterglow</button>
+        <button id="clearBtn" class="btn" title="清除已同意狀態（測試用）">清除同意狀態</button>
+      </div>
+      <div class="hint">若先前已同意，此頁會自動勾選，可直接進入。</div>
 
-    <div class="row">
-      <a href="./privacy.html">隱私政策</a>
-      <a href="./disclaimer.html">免責聲明</a>
-    </div>
+      <footer aria-label="頁尾">
+        <nav>
+          <a href="./privacy.html">隱私政策</a>
+          <a href="./disclaimer.html">免責聲明</a>
+        </nav>
+        <div class="legal">© <span id="y"></span> Afterglow</div>
+      </footer>
+    </main>
   </div>
 
+  <!-- 暫停 PWA：不載入 manifest / service worker，避免 404 與快取陰影 -->
   <script>
-    const chk = document.getElementById('chk');
-    const btn = document.getElementById('btnEnter');
-    const err = document.getElementById('err');
+    (function () {
+      const byId = (id) => document.getElementById(id);
+      const agree = byId('agree');
+      const enter = byId('enterBtn');
+      const clear = byId('clearBtn');
+      const YEAR_EL = byId('y');
 
-    btn.addEventListener('click', () => {
-      if (!chk.checked) {
-        err.textContent = '請先勾選同意條款';
-        return;
-      }
-      try {
-        localStorage.setItem('ag_consent', 'yes');
-        location.href = './Home.html';
-      } catch(e) {
-        location.href = './Home.html';
-      }
-    });
+      YEAR_EL.textContent = new Date().getFullYear();
 
-    chk.addEventListener('change', () => {
-      if (chk.checked) err.textContent = '';
-    });
+      // 若已同意，預設勾選並允許進入
+      const CONSENT_KEY = 'afterglowConsent';
+      const hasConsent = localStorage.getItem(CONSENT_KEY) === 'yes';
+      if (hasConsent) {
+        agree.checked = true;
+        enter.disabled = false;
+      }
+
+      agree.addEventListener('change', () => {
+        enter.disabled = !agree.checked;
+      });
+
+      enter.addEventListener('click', () => {
+        if (!agree.checked) return;
+        try { localStorage.setItem(CONSENT_KEY, 'yes'); } catch (e) {}
+        // 依你的指定，預設導向 Home.html（相對路徑，不硬寫 repo 名）
+        window.location.href = './Home.html';
+      });
+
+      // 測試用：清除同意狀態
+      clear.addEventListener('click', () => {
+        try { localStorage.removeItem(CONSENT_KEY); } catch (e) {}
+        agree.checked = false;
+        enter.disabled = true;
+        alert('已清除同意狀態。重新整理後可再次測試。');
+      });
+    })();
   </script>
 </body>
 </html>

@@ -1,0 +1,171 @@
+/* Afterglow 全域樣式 */
+:root {
+  --bg: #0b0b0d;
+  --fg: #f6f6f6;
+  --muted: #b7b7c0;
+  --accent: #ff4d88;
+  --accent2: #ff6f61;
+  --border: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent2);
+  text-decoration: underline;
+}
+
+/* 通用容器 */
+.wrap {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 卡片樣式 */
+.card {
+  width: min(720px, 92vw);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #0b0b0d, #0a0a0a);
+  border-radius: 16px;
+  padding: 28px 20px;
+  box-shadow: 0 0 40px rgba(255, 77, 136, 0.12);
+}
+
+/* Logo 區域 */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.logo img {
+  height: 28px;
+  width: auto;
+}
+
+/* 標題樣式 */
+h1 {
+  font-size: 20px;
+  margin: 0 0 8px;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+
+p.sub {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 同意勾選框 */
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 18px;
+}
+
+.consent input {
+  margin-top: 2px;
+  transform: translateY(2px);
+}
+
+/* 按鈕樣式 */
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid #333;
+  background: #111;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  font-size: 14px;
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: transparent;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: var(--accent2);
+  box-shadow: 0 0 20px rgba(255, 77, 136, 0.3);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 頁尾 */
+footer {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+footer nav a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-right: 14px;
+}
+
+footer nav a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.legal {
+  opacity: 0.85;
+}
+
+.hint {
+  font-size: 12px;
+  color: #888;
+  margin-top: 10px;
+}
+
+/* 響應式設計 */
+@media (max-width: 420px) {
+  .actions {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
