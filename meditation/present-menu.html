@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>回到當下｜選單</title>
+<style>
+  :root{
+    /* 動態節奏（B：自然） */
+    --t: 1400ms; /* 過場秒數 1.4s */
+    --ease: cubic-bezier(.37,.03,.13,.97);
+
+    /* 色彩與光暈（收斂、不刺眼） */
+    --bg:#000;
+    --pink-solid:#FF5ACD;
+    --pink-glow:#FF7BD8;
+
+    /* 玻璃按鈕 */
+    --glass-bd:#ffffff3a;
+    --glass-tx:#ffffffc0;
+  }
+  html,body{height:100%;margin:0;background:var(--bg);color:#eaeaea;
+    font-family:-apple-system,Segoe UI,Roboto,"Noto Sans TC",Helvetica,Arial,sans-serif}
+  .wrap{position:relative;min-height:100svh;overflow:hidden}
+
+  /* 頂部：Logo + 返回鍵（玻璃、弱存在） */
+  .topbar{position:fixed;top:env(safe-area-inset-top,10px);left:0;right:0;z-index:5;
+    display:flex;justify-content:space-between;align-items:center;padding:10px 14px}
+  .logo{font-size:26px;font-family:"Brush Script MT","Pacifico",cursive;opacity:.9;letter-spacing:.4px}
+  .btn-glass{color:var(--glass-tx);text-decoration:none;border:1px solid var(--glass-bd);
+    padding:8px 12px;border-radius:999px;backdrop-filter:blur(10px);opacity:.7}
+  .btn-glass:hover{opacity:.9}
+
+  /* 兩顆球容器 */
+  .layer{position:absolute;left:50%;transform:translateX(-50%);will-change:transform,opacity,filter}
+
+  /* 日蝕球（上）—僅漂浮（微幅 0.97↔1.03） */
+  .eclipse{
+    top:18vh;width:min(72vmin,84vw);height:min(72vmin,84vw);
+    display:grid;place-items:center;cursor:pointer;transition:transform var(--t) var(--ease),opacity var(--t) var(--ease),filter var(--t) var(--ease)}
+  .eclipse::before{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    border:clamp(10px,3.2vmin,22px) solid var(--pink-solid);
+    /* 柔霧三層光暈（內→外） */
+    box-shadow:
+      0 0 4px 0 rgba(255,90,205,.55),
+      0 0 80px 30px rgba(255,123,216,.28),
+      0 0 160px 80px rgba(255,123,216,.12);
+  }
+  .eclipse .hole{width:100%;height:100%;border-radius:50%;background:#000;display:grid;place-items:center}
+  .label{font-size:clamp(13px,3.4vmin,18px);letter-spacing:.12em;opacity:.8;text-shadow:0 0 14px rgba(255,255,255,.25)}
+
+  /* 實心球（下）—僅漂浮（不做呼吸節奏） */
+  .breath{bottom:12vh;width:min(68vmin,88vw);height:min(68vmin,88vw);display:grid;place-items:center;cursor:pointer;
+    transition:transform var(--t) var(--ease),opacity var(--t) var(--ease)}
+  .ball{width:100%;height:100%;border-radius:50%;
+    background:radial-gradient(circle at 45% 40%, #ffd0f0 0%, var(--pink-solid) 60%, #d91d93 100%);
+    box-shadow:
+      0 0 70px 22px rgba(255,123,216,.26),
+      0 0 160px 70px rgba(255,123,216,.12);
+    animation: float 7s ease-in-out infinite;
+  }
+  /* 兩球同用的微漂浮（幅度很小） */
+  .eclipse, .breath{animation: drift 14s ease-in-out infinite}
+  @keyframes drift{
+    0%,100% { transform:translate(-50%, 0) scale(1.00) }
+    50%     { transform:translate(-50%, -0.8vh) scale(1.03) }
+  }
+  @keyframes float{
+    0%,100% { transform:translateY(0) }
+    50%     { transform:translateY(-0.6vh) }
+  }
+
+  /* 點語音引導 → 實心球下沉淡出；日蝕球下移放大 */
+  .to-voice .breath{ transform:translate(-50%, 42vh); opacity:0 }
+  .to-voice .eclipse{ top:50%; transform:translate(-50%,-40%) scale(1.06) }
+
+  /* 點呼吸冥想 → 日蝕球上升淡出；實心球上移並保留 */
+  .to-breath .eclipse{ transform:translate(-50%,-60vh); opacity:0 }
+  .to-breath .breath{ bottom:50vh; transform:translate(-50%, -20%) }
+
+  /* 底部雙按鈕（可改為整顆球可點，目前兩者都可點） */
+  .cta{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,12px);display:flex;gap:12px;justify-content:center;z-index:4}
+  .pill{border:1px solid var(--glass-bd);padding:10px 14px;border-radius:999px;backdrop-filter:blur(10px);opacity:.85}
+  .pill span{font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+  <div class="topbar">
+    <a class="btn-glass" href="/home.html" aria-label="回首頁">⌂ 回首頁</a>
+    <div class="logo">Afterglow</div>
+    <a class="btn-glass" href="/home.html" aria-label="上一層">← 上一層</a>
+  </div>
+
+  <!-- 上：日蝕球（語音引導） -->
+  <div class="layer eclipse" id="eclipse" role="button" tabindex="0" aria-label="語音引導">
+    <div class="hole"><div class="label">語音引導</div></div>
+  </div>
+
+  <!-- 下：實心球（呼吸冥想） -->
+  <div class="layer breath" id="breath" role="button" tabindex="0" aria-label="呼吸冥想">
+    <div class="ball" aria-hidden="true"></div>
+  </div>
+
+  <!-- 底部輕玻璃按鈕（可保留/移除） -->
+  <div class="cta">
+    <a class="pill" id="btnVoice"><span>進入語音引導</span></a>
+    <a class="pill" id="btnBreath"><span>進入呼吸冥想</span></a>
+  </div>
+</div>
+
+<script>
+  const wrap   = document.getElementById('wrap');
+  const eclipse= document.getElementById('eclipse');
+  const breath = document.getElementById('breath');
+
+  function goVoice(){
+    wrap.classList.remove('to-breath');
+    wrap.classList.add('to-voice');
+    setTimeout(()=>location.href='/voice.html', 1450); // 與 --t 對齊
+  }
+  function goBreath(){
+    wrap.classList.remove('to-voice');
+    wrap.classList.add('to-breath');
+    setTimeout(()=>location.href='/breath.html', 1450);
+  }
+
+  // 兩球與底部按鈕皆可觸發
+  eclipse.addEventListener('click', goVoice, {passive:true});
+  breath .addEventListener('click', goBreath, {passive:true});
+  document.getElementById('btnVoice').addEventListener('click', goVoice);
+  document.getElementById('btnBreath').addEventListener('click', goBreath);
+  // 無障礙鍵盤
+  eclipse.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') goVoice(); });
+  breath .addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') goBreath(); });
+</script>
+</body>
+</html>
