@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-version="v0.1">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afterglow｜冥想選單</title>
+  <meta name="description" content="選擇你的練習：呼吸球冥想或語音引導冥想。" />
+  <link rel="icon" href="../assets/img/favicon.png" />
+  <!-- 建議保留：主樣式 -->
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <style>
+    /* 輕量保底樣式（若 main.css 未備用） */
+    :root { --gap: 16px; }
+    body { margin: 0; background:#0a0a0a; color:#eee; font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans",sans-serif; }
+    .wrap { min-height: 100dvh; display:flex; flex-direction:column; }
+    header { position: sticky; top: 0; display:flex; justify-content:flex-end; padding: 12px; backdrop-filter: blur(4px); }
+    .home-btn { text-decoration:none; border:1px solid #666; padding:8px 12px; border-radius:999px; color:#eee; font-size:14px; }
+    main { flex:1; display:grid; place-items:center; padding: 6vh 20px; }
+    .panel { width:min(880px, 96%); display:grid; gap: var(--gap); }
+    .title { text-align:center; line-height:1.35; }
+    .grid { display:grid; gap: var(--gap); grid-template-columns: 1fr; }
+    .card { border:1px solid #333; border-radius:16px; padding:20px; background: #0f0f0f; }
+    .card h2 { margin: 0 0 6px 0; font-size: 18px; }
+    .card p { margin: 0 0 14px 0; opacity:.8; font-size: 14px; line-height:1.6; }
+    .action { display:flex; gap:12px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; border:1px solid #666; padding:10px 14px; border-radius:12px; color:#eee; font-size:14px; }
+    footer { padding: 24px; border-top:1px solid #222; display:flex; align-items:center; justify-content:center; gap:16px; font-size:12px; color:#aaa; }
+    .dot { width:4px; height:4px; border-radius:50%; background:#555; display:inline-block; }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="home-btn" href="../Home.html" aria-label="返回首頁">返回首頁</a>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="menu-title">
+      <div class="title">
+        <h1 id="menu-title">你想怎麼冥想？</h1>
+        <p>先選一條路，慢慢來就好。</p>
+      </div>
+
+      <div class="grid" role="list">
+        <!-- 呼吸球冥想 -->
+        <article class="card" role="listitem">
+          <h2>呼吸球冥想</h2>
+          <p>以視覺化呼吸球引導，節奏感回來，身體先穩下來。（MVP：20% ⇄ 100%，入 6s / 出 4s）</p>
+          <div class="action">
+            <a class="btn" href="./breathing.html" aria-label="前往呼吸球冥想">開始</a>
+          </div>
+        </article>
+
+        <!-- 語音引導冥想 -->
+        <article class="card" role="listitem">
+          <h2>語音引導冥想</h2>
+          <p>閉上眼睛，跟著聲音走路。吸、吐、回到當下。</p>
+          <div class="action">
+            <a class="btn" href="./GuideMeditation.html" aria-label="前往語音引導冥想">開始</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="../privacy.html">隱私政策</a>
+    <span class="dot" aria-hidden="true"></span>
+    <a href="../disclaimer.html">免責聲明</a>
+    <span class="dot" aria-hidden="true"></span>
+    <span>Afterglow <span id="ver">v0.1</span></span>
+  </footer>
+</div>
+
+<!-- 建議：之後把「球體入/出場動畫參數」收斂成 JS 常數 -->
+<script>
+  // 版號占位：若你在部署流程寫入版本，可在此覆寫
+  // document.getElementById('ver').textContent = window.AFTERGLOW_BUILD_VERSION ?? 'v0.1';
+</script>
+</body>
+</html>
